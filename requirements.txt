@@ -1,0 +1,11 @@
+pandas
+pymongo
+sqlalchemy
+psycopg2-binary
+requests
+matplotlib
+seaborn
+plotly
+streamlit
+networkx
+python-dotenv

@@ -1,2 +1,21 @@
-# Analytical-Programming
-This project successfully delivers a comprehensive movie data system. I went beyond simple analysis by engineering a pipeline that handles the complexity of API data ingestion and normalization. I have provided a tool that bridges the gap between raw data and strategic insight.
+# TMDB + IMDb Movie Analytics Project
+
+## Datasets
+1. TMDB 5000+ movies (API – semi-structured JSON) – collected by Arjun Mohan
+2. IMDb title.basics, title.ratings, title.crew, name.basics, title.akas (TSV – structured) – collected by Arjun Mohan
+
+## Run order
+1. python collect_store_raw.py
+2. python ETL.py
+3. python imdb_structured.py
+4. python integrate_tmdb_imdb.py
+5. python validation.py
+6. python visualization_and_insights.py
+7. streamlit run dashboard.py
+
+## Setup
+- MongoDB running on localhost:27017
+- PostgreSQL database tmdb_analytics with user postgres
+- Update config.py with your passwords
+
+All data processing is 100% programmatic – no manual steps.

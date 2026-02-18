@@ -1,0 +1,11 @@
+# 1. Make sure everything is up to date
+python collect_store_raw.py                    # (if you want fresh TMDB data)
+python ETL.py
+python imdb_structured.py
+python integrate_tmdb_imdb.py                # ← creates movies_integrated
+
+# 2. Test dashboard
+streamlit run dashboard.py                   # ← should work now with no error
+
+# 3. Generate static plots
+python visualization_and_insights.py
