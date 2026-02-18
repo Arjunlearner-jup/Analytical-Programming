@@ -16,6 +16,7 @@
 ## Setup
 - MongoDB running on localhost:27017
 - PostgreSQL database tmdb_analytics with user postgres
-- Update config.py with your passwords
+- config.py containing bearer code, api key and postgres password
+
 
 All data processing is 100% programmatic – no manual steps.
