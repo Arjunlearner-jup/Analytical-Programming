@@ -1,7 +1,7 @@
 # TMDB + IMDb Movie Analytics Project
 
 ## Datasets
-1. TMDB 5000+ movies (API – semi-structured JSON) – collected by Arjun Mohan
+1. TMDB 2000+ movies (API – semi-structured JSON) – collected by Arjun Mohan
 2. IMDb title.basics, title.ratings, title.crew, name.basics, title.akas (TSV – structured) – collected by Arjun Mohan
 
 ## Run order
@@ -20,3 +20,4 @@
 
 
 All data processing is 100% programmatic – no manual steps.
+
