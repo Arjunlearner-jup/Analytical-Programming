@@ -22,11 +22,11 @@ FRED API (Federal Reserve Economic Data) - St. Louis Fed
      Fetch data from fred_series
      Store raw API responses
 
-2. **Data Transformation** 
+3. **Data Transformation** 
    - Clean and normalize data
    
 
-3. **Data Loading** (`postgres_load`)
+4. **Data Loading** (`postgres_load`)
    - Load processed data into PostgreSQL database
    - Load processed data into MongoDB Atlas
    - Both databases are populated in parallel
