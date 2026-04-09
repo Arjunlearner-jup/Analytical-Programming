@@ -1,8 +1,4 @@
----
-output:
-  word_document: default
-  html_document: default
----
+
 # OECD/FRED economic time series for Ireland
 
 A comprehensive OECD/FRED economic time series for Ireland that Extracts OECD CLI for Ireland from FRED API (St. Louis Fed), processes it through a Dagster ETL pipeline, stores it in PostgreSQL, and visualizes insights through an interactive Streamlit dashboard.
