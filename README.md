@@ -18,15 +18,13 @@ FRED API (Federal Reserve Economic Data) - St. Louis Fed
 ### Pipeline Stages
 
 1. **Raw Data Ingestion** 
-     Loops over INDICATORS
-     Fetch data from fred_series
-     Store raw API responses
-
-3. **Data Transformation** 
+   - Loops over INDICATORS
+   - Fetch data from fred_series
+   - Store raw API responses
+2. **Data Transformation** 
    - Clean and normalize data
    
-
-4. **Data Loading** (`postgres_load`)
+3. **Data Loading** (`postgres_load`)
    - Load processed data into PostgreSQL database
    - Load processed data into MongoDB Atlas
    - Both databases are populated in parallel
