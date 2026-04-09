@@ -46,7 +46,7 @@ FRED API (Federal Reserve Economic Data) - St. Louis Fed
 
 **Clone the repository**:
    ```bash
-   cd "c:\Users\nisha\Desktop\Data-Analysis\analytics programming\Project\MAIN"
+   cd "c:\Users\arjun\Desktop\Data-Analysis\analytics programming\Project\MAIN"
    ```
 
   # PostgreSQL
@@ -78,18 +78,16 @@ streamlit run app.py
 
 #### Option 2: Full ETL Pipeline
 ```bash
-
+cd "path"
 dagster dev -f postgres.py
 ```
 Access Dagster UI at `http://localhost:3000`
 
 Then in another terminal:
 ```bash
-cd weather_etl_project/dashboard
+cd "path"
 streamlit run app.py
 ```
-
-##  Dependencies
 
 ### Core ETL
 - **dagster** (1.6.0): Orchestration framework
@@ -120,40 +118,18 @@ streamlit run app.py
 **Modular Design**: Reusable assets and utilities for extensibility  
 **Data Quality Checks**: Automatic imputation, outlier detection, and validation  
 
-##  Development
 
 ### Project Structure
 - `postgres.py`: Main ETL pipeline with Dagster assets
 - `dashboard/app.py`: Dashboard home page
 - `dashboard/utils.py`: Database connection and data loading utilities
-- `database_conn_test.py`: Connection testing utilities
-
-### Adding New Analyses
-1. Create a new page in `dashboard/pages/`
-2. Import utilities from `dashboard/utils.py`
-3. Use Plotly for visualizations
-4. Add navigation in sidebar
+- `database_conn_ETL.py`: Connection testing utilities
 
 ### Extending the Pipeline
 1. Add new assets to `postgres.py`
 2. Define data sources and transformations
 3. Configure outputs in Dagster
-4. Test with `database_conn_test.py`
-
-
-### Dashboard Configuration
-Modify `dashboard/app.py`:
-- Page layout and styling
-- Filter options
-- Default date ranges
-- Metric calculations
-
-## Troubleshooting
-
-### Database Connection Issues
-```bash
-python weather_etl_project/database_conn_test.py
-```
+4. Test with `database_conn_ETL.py`
 
 ### Dashboard Won't Start
 - Check if all dependencies are installed: `pip install -r requirements.txt`
@@ -164,31 +140,4 @@ python weather_etl_project/database_conn_test.py
 - Review logs in `dagster_home/logs/`
 - Check API connectivity to Open-Meteo
 - Verify database permissions
-
-## Data Schema
-
-### Fact Table
-"time"
-"temperature_2m"
-"precipitation"
-"cloud_cover"
-"cloud_cover_low"
-"shortwave_radiation"
-"direct_radiation"
-"diffuse_radiation"
-"wind_speed_10m"
-"month_name"
-"hour"
-"day_of_week"
-"is_weekend"
-"rain"
-"et0_fao_evapotranspiration"
-"vapor_pressure_deficit"
-"pressure_msl"
-"surface_pressure"
-"temperature_2m_marine"
-"wind_speed_10m_marine"
-"wind_speed_100m"
-"wind_direction_100m"
-"wind_gusts_10m"
 
