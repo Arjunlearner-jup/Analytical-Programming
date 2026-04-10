@@ -61,13 +61,7 @@ FRED API (Federal Reserve Economic Data) - St. Louis Fed
    
 ### Running the Project
 
-#### Option 1: Dashboard Only
-```bash
-
-streamlit run app.py
-```
-
-#### Option 2: Full ETL Pipeline
+#### Full ETL Pipeline
 ```bash
 cd "path"
 dagster dev -f postgres.py
