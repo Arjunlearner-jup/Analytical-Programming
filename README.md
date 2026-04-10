@@ -79,7 +79,10 @@ streamlit run app.py
 - **sqlalchemy** (2.0.23): ORM for database operations
 - **psycopg2-binary** (2.9.9): PostgreSQL adapter- **pymongo** (4.6.0): MongoDB driver for Atlas
 ### Dagster UI
-- materialize ab_raw then b_tables then postgres_load
+- materialize in sequence
+- ab_raw
+- b_tables
+- postgres_load
 ### Dashboard
 - **streamlit** (1.30.0): Web framework
 - **plotly** (5.18.0): Interactive visualizations
