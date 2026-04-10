@@ -119,8 +119,7 @@ streamlit run app.py
 ### Dashboard Won't Start
 - Check if all dependencies are installed: `pip install -r requirements.txt`
 - Verify database is running
-- Check `.env` file configuration
-
+- Enter your postgres details in each file (postgres.py and database_conn_ETL.py)
 ### ETL Pipeline Errors
 - Review logs in `dagster_home/logs/`
 - Check API connectivity to Open-Meteo
