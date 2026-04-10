@@ -185,6 +185,19 @@ selected_countries = st.session_state.selected_countries
 year_range = st.session_state.year_range
 selected_indicator = st.session_state.selected_indicator
 
+# ----------------------------
+# Apply filters to create filtered_df
+# ----------------------------
+
+filtered_df = df[
+    df["country"].isin(selected_countries)
+    & (df["year"] >= year_range[0])
+    & (df["year"] <= year_range[1])
+]
+
+if filtered_df.empty:
+    st.warning("No data available for the selected filters.")
+    st.stop()
 
 # ----------------------------
 # KPI metric cards
