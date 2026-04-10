@@ -49,7 +49,7 @@ FRED API (Federal Reserve Economic Data) - St. Louis Fed
    
    # MongoDB Atlas (optional but recommended)
    MONGO_URL=mongodb+srv://username:password@cluster.mongodb.net/?appName=YourApp
-   MONGO_DB=weather_analytics
+   MONGO_DB=your database name
    
    # Dagster
    DAGSTER_HOME=/path/to/dagster_home
@@ -78,10 +78,11 @@ streamlit run app.py
 - **dagster** (1.6.0): Orchestration framework
 - **sqlalchemy** (2.0.23): ORM for database operations
 - **psycopg2-binary** (2.9.9): PostgreSQL adapter- **pymongo** (4.6.0): MongoDB driver for Atlas
+### Dagster UI
+- materialize ab_raw then b_tables then postgres_load
 ### Dashboard
 - **streamlit** (1.30.0): Web framework
 - **plotly** (5.18.0): Interactive visualizations
-
 ### Data Processing
 - **pandas** (2.1.4): Data manipulation
 - **numpy** (1.26.2): Numerical computing
