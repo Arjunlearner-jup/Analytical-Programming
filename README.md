@@ -39,9 +39,6 @@ FRED API (Federal Reserve Economic Data) - St. Louis Fed
 ### Installation
 
 **Clone the repository**:
-   ```bash
-   cd "c:\Users\arjun\Desktop\Data-Analysis\analytics programming\Project\MAIN"
-   ```
 
   # PostgreSQL
    PG_HOST=127.0.0.1
