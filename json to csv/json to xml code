@@ -1,1 +1,33 @@
+import json
+import xml.etree.ElementTree as ET
+from pathlib import Path
 
+def json_to_xml(json_file, xml_file, root_name="data", row_name="row"):
+    json_file = Path(json_file)
+    xml_file = Path(xml_file)
+
+    with json_file.open("r", encoding="utf-8") as f:
+        data = json.load(f)
+
+    root = ET.Element(root_name)
+
+    if isinstance(data, list):
+        items = data
+    elif isinstance(data, dict):
+        items = [data]
+    else:
+        raise ValueError("JSON must be a list or dictionary")
+
+    for record in items:
+        row = ET.SubElement(root, row_name)
+        if isinstance(record, dict):
+            for key, value in record.items():
+                child = ET.SubElement(row, str(key))
+                child.text = "" if value is None else str(value)
+        else:
+            row.text = "" if record is None else str(record)
+
+    tree = ET.ElementTree(root)
+    tree.write(xml_file, encoding="utf-8", xml_declaration=True)
+
+json_to_xml("AHM02.json", "AHM02.xml", root_name="AHM02", row_name="record")
