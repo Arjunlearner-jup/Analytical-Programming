@@ -1,1 +1,97 @@
+#!/usr/bin/env python
+# coding: utf-8
 
+import pandas as pd
+import matplotlib.pyplot as plt
+import streamlit as st
+from xml.etree import ElementTree as ET
+
+st.set_page_config(page_title="Agricultural Price Indices", layout="wide")
+
+st.title("Effect of Iraq War (03–11) on Agricultural Input and Output Price Indices")
+
+
+# Read XML file and convert to DataFrame
+def xml_to_df(xml_path):
+    tree = ET.parse(xml_path)
+    root = tree.getroot()
+    rows = []
+    for record in root.findall(".//record"):  # adjust if XML tag differs
+        row = {}
+        for child in record:
+            tag = child.tag.strip()
+            text = child.text if child.text is not None else ""
+            row[tag] = text
+        rows.append(row)
+    return pd.DataFrame(rows)
+
+
+df = xml_to_df("AHM02.xml")
+
+# Normalize column names and rename
+df.columns = df.columns.str.strip()
+
+df = df.rename(columns={
+    "Month": "Month",
+    "Agricultural_Product": "Agricultural Product",
+    "VALUE": "VALUE"
+})
+
+# Ensure numeric type for VALUE
+df["VALUE"] = pd.to_numeric(df["VALUE"], errors="coerce")
+df = df.dropna(subset=["VALUE"])
+
+# Year
+df["Year"] = df["Month"].str[:4].astype(int)
+
+# Filter for 2003–2011
+df_filtered = df.loc[
+    (df["Year"] >= 2003) & (df["Year"] <= 2011),
+    ["Year", "Agricultural Product", "VALUE"]
+].reset_index(drop=True)
+
+
+products = sorted(df_filtered["Agricultural Product"].unique())
+
+st.sidebar.header("Filters")
+selected_products = st.sidebar.multiselect(
+    "Select Agricultural Product",
+    products,
+    default=products[:5]
+)
+
+year_range = st.sidebar.slider(
+    "Select Year Range",
+    min_value=int(df_filtered["Year"].min()),
+    max_value=int(df_filtered["Year"].max()),
+    value=(2003, 2011)
+)
+
+# ----- PIE CHART ONLY VERSION -----
+filtered = df_filtered[
+    (df_filtered["Year"] >= year_range[0]) &
+    (df_filtered["Year"] <= year_range[1]) &
+    (df_filtered["Agricultural Product"].isin(selected_products))
+]
+
+if not filtered.empty:
+    # Group by product and aggregate VALUE by mean
+    pie_data = filtered.groupby("Agricultural Product")["VALUE"].mean()
+
+    fig, ax = plt.subplots(figsize=(10, 7))
+
+    ax.pie(
+        pie_data,
+        labels=pie_data.index,
+        autopct="%1.1f%%",
+        startangle=90,
+        textprops={"fontsize": 10}
+    )
+    ax.set_title("Share of Agricultural Price Indices by Product (2003–2011)")
+
+    plt.axis("equal")  # Equal aspect ratio ensures that pie is drawn as a circle.
+    plt.tight_layout()
+
+    st.pyplot(fig)
+else:
+    st.warning("No data available for the selected filters.")
