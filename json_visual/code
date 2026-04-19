@@ -1,1 +1,108 @@
+#!/usr/bin/env python
+# coding: utf-8
 
+import pandas as pd
+import matplotlib.pyplot as plt
+import streamlit as st
+
+st.set_page_config(page_title="Agricultural Price Indices", layout="wide")
+
+st.title("Effect of Iraq War (03–11) on Agricultural Input and Output Price Indices")
+st.caption("Filter by year and agricultural product to create readable charts.")
+
+df = pd.read_json("AHM02.json")
+df["Year"] = df["Month"].str[:4].astype(int)
+
+df_filtered = df.loc[
+    (df["Year"] >= 2003) & (df["Year"] <= 2011),
+    ["Year", "Agricultural Product", "VALUE"]
+].reset_index(drop=True)
+
+# Ensure VALUE is numeric
+df_filtered["VALUE"] = pd.to_numeric(df_filtered["VALUE"], errors="coerce")
+df_filtered = df_filtered.dropna(subset=["VALUE"])
+
+products = sorted(df_filtered["Agricultural Product"].unique())
+
+st.sidebar.header("Filters")
+selected_products = st.sidebar.multiselect(
+    "Select Agricultural Product",
+    products,
+    default=products[:5]
+)
+
+year_range = st.sidebar.slider(
+    "Select Year Range",
+    min_value=int(df_filtered["Year"].min()),
+    max_value=int(df_filtered["Year"].max()),
+    value=(2003, 2011)
+)
+
+# Filtered data
+filtered = df_filtered[
+    (df_filtered["Year"] >= year_range[0]) &
+    (df_filtered["Year"] <= year_range[1]) &
+    (df_filtered["Agricultural Product"].isin(selected_products))
+]
+
+if not filtered.empty:
+    # For each product, compute mean VALUE over selected years
+    # This gives how much each product “contributes” to the overall index shift
+    cat_means = filtered.groupby("Agricultural Product")["VALUE"].mean()
+
+    # Optional: sort by contribution size
+    cat_means = cat_means.sort_values(ascending=False)
+
+    # Labels and values
+    labels = cat_means.index
+    values = cat_means.values
+
+    # Compute base bar heights and offset for waterfall
+    # We treat the first term as the starting value, then show deltas
+    # Waterfall: first bar is base, others are changes relative to base
+    ypos = values.cumsum() - values  # start positions
+    heights = values.copy()
+
+    fig, ax = plt.subplots(figsize=(12, 6))
+
+    # Draw bars
+    for idx, (y, h, label) in enumerate(zip(ypos, heights, labels)):
+        color = "C0" if h >= 0 else "C3"
+        ax.bar(
+            label,
+            h,
+            bottom=y,
+            color=color,
+            edgecolor="black",
+            alpha=0.8,
+            label="Increase" if idx == 0 and h >= 0 else "Decrease" if idx == 0 and h < 0 else None
+        )
+
+    # Add numerical labels on bars
+    for label, y, h in zip(labels, ypos, heights):
+        va = "bottom" if h >= 0 else "top"
+        xytext = (0, 3) if h >= 0 else (0, -3)
+        ax.annotate(
+            f"{h:.1f}",
+            xy=(label, y + h),
+            xytext=xytext,
+            textcoords="offset points",
+            fontsize=9,
+            ha="center",
+            va=va
+        )
+
+    ax.axhline(y=0, color="black", linewidth=0.5)
+
+    ax.set_title("Waterfall: Contribution of Agricultural Products to Index Change (2003–2011)")
+    ax.set_xlabel("Agricultural Product")
+    ax.set_ylabel("Index (Base 2005=100)")
+    ax.grid(True, axis="y", alpha=0.3)
+
+    # Rotate x‑labels if needed
+    plt.xticks(rotation=45)
+    plt.tight_layout()
+
+    st.pyplot(fig)
+else:
+    st.warning("No data available for the selected filters.")
