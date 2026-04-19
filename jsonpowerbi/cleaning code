@@ -1,1 +1,21 @@
+#!/usr/bin/env python
+# coding: utf-8
 
+import pandas as pd
+
+
+
+
+df = pd.read_json("AHM02.json")
+df["Year"] = df["Month"].str[:4].astype(int)
+
+df_filtered = df.loc[
+    (df["Year"] >= 2003) & (df["Year"] <= 2011),
+    ["Year", "Agricultural Product", "VALUE"]
+].reset_index(drop=True)
+
+# Ensure VALUE is numeric
+df_filtered["VALUE"] = pd.to_numeric(df_filtered["VALUE"], errors="coerce")
+df_filtered = df_filtered.dropna(subset=["VALUE"])
+
+products = sorted(df_filtered["Agricultural Product"].unique())
