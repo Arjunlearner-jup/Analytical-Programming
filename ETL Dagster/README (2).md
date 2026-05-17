@@ -71,7 +71,7 @@ Access Dagster UI at `http://localhost:3000`
 Then in another terminal:
 ```bash
 cd "path"
-streamlit run app.py
+streamlit run visual.py
 ```
 
 ### Core ETL
